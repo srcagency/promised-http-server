@@ -1,0 +1,28 @@
+{
+	"name": "promised-http-server",
+	"private": true,
+	"version": "1.0.0",
+	"description": "A simple http server with promise based interface",
+	"main": "index.js",
+	"keywords": [
+		"http",
+		"server",
+		"promise",
+		"futures",
+		"bluebird"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://bitbucket.org/tjconcept/njs-promised-http-server.git"
+	},
+	"author": {
+		"name": "Thomas Jensen",
+		"email": "thomas@tjconcept.dk",
+		"url": "http://tjconcept.dk"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"bluebird": "~2.0.7",
+		"debug": "~1.0.0"
+	}
+}
