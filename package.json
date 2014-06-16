@@ -13,7 +13,7 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://bitbucket.org/tjconcept/njs-promised-http-server.git"
+		"url": "https://bitbucket.org/src-agency/njs-promised-http-server.git"
 	},
 	"author": {
 		"name": "Thomas Jensen",
