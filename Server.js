@@ -51,7 +51,10 @@ function onError( e ){
 }
 
 function onListening( e ) {
-	debug(e && 'Error starting server (listening on: %s)' || 'Started http server (listening on: %s)', this.listen);
+	debug(e
+		? 'Error starting server (listening on: %s)'
+		: 'Started http server (listening on: ' + (isPort(this.listen) ? 'http://localhost:%s' : '%s') + ')'
+	, this.listen);
 
 	if (!isPort(this.listen))
 		fs.chmodSync(this.listen, '0777');
