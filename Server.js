@@ -56,7 +56,7 @@ function onListening( e ) {
 		: 'Started http server (listening on: ' + (isPort(this.listen) ? 'http://localhost:%s' : '%s') + ')'
 	, this.listen);
 
-	if (!isPort(this.listen))
+	if (!e && !isPort(this.listen))
 		fs.chmodSync(this.listen, '0777');
 }
 
