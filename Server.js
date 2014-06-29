@@ -37,7 +37,7 @@ function Server( listen, options ){
 function onError( e ){
 	debug('Failed to start http server', e);
 
-	if (e.code === 'EADDRINUSE' && parseInt(this.listen, 10) !== this.listen) {
+	if (e.code === 'EADDRINUSE' && !isPort(this.listen)) {
 		debug('Address was in use');
 
 		if (this.retries) {
@@ -53,7 +53,7 @@ function onError( e ){
 function onListening( e ) {
 	debug(e && 'Error starting server (listening on: %s)' || 'Started http server (listening on: %s)', this.listen);
 
-	if (parseInt(this.listen, 10) !== this.listen)
+	if (!isPort(this.listen))
 		fs.chmodSync(this.listen, '0777');
 }
 
@@ -129,4 +129,9 @@ function send( request, response, data, code ){
 				response.end(data);
 			}
 		});
+}
+
+function isPort( port ) {
+	// TODO: check in valid port range
+	return parseInt(port, 10) === port;
 }
