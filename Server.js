@@ -125,7 +125,7 @@ function send( request, response, data, code ){
 					response.end(JSON.stringify(data));
 				} else {
 					response.writeHead(code || 200, { 'Content-Type': 'text/plain; charset=utf-8' });
-					response.end(util.inspect(data, { depth: null }));
+					response.end(JSON.stringify(data, null, '\t'));
 				}
 			} else {
 				response.setHeader('Content-Type', 'text/html; charset=utf-8');
