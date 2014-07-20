@@ -98,7 +98,8 @@ function handleFatalError( e ){
 
 	// @todo intense logging
 
-	HttpError(500, 'Internal server error. Appropriate staff has been notified.').send(this.response);
+	if (!this.response.headersSent)
+		HttpError(500, 'Internal server error. Appropriate staff has been notified.').send(this.response);
 
 	// rethrow to make it appear in stdout
 	throw e;
