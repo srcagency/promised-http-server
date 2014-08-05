@@ -118,6 +118,9 @@ function send( request, response, data, code ){
 	return Promise
 		.cast(data)
 		.then(function(data){
+			if (typeof data === 'undefined')
+				return;
+
 			if (typeof data !== 'string') {
 				var accept = request.headers.accept;
 
