@@ -1,9 +1,9 @@
 {
 	"name": "promised-http-server",
 	"private": true,
-	"version": "1.0.0",
-	"description": "A simple http server with promise based interface",
-	"main": "index.js",
+	"version": "2.0.0",
+	"description": "A simple http server with an interface based on promises",
+	"main": "src/Server.js",
 	"keywords": [
 		"http",
 		"server",
@@ -13,16 +13,17 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://bitbucket.org/src-agency/njs-promised-http-server.git"
+		"url": "https://github.com/srcagency/promised-http-server.git"
 	},
 	"author": {
 		"name": "Thomas Jensen",
-		"email": "thomas@tjconcept.dk",
-		"url": "http://tjconcept.dk"
+		"email": "thomas@src.agency",
+		"url": "http://src.agency"
 	},
 	"license": "MIT",
 	"dependencies": {
-		"bluebird": "~2.1.3",
-		"debug": "~1.0.2"
+		"extend": "^1.3.0",
+		"bluebird": "^2.3.2",
+		"debug": "^2.0.0"
 	}
 }
