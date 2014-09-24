@@ -14,7 +14,7 @@ function send( request, response, data, code, reason ){
 	code = code || response.statusCode;
 	reason = reason || http.STATUS_CODES[code];
 
-	if (accept && accept.indexOf('json'))
+	if (data !== undefined && accept && accept.indexOf('json'))
 		headers = json;
 	else
 		headers = plain;
