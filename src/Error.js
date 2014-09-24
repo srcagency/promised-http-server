@@ -7,7 +7,7 @@ module.exports = HttpError;
 
 function HttpError( statusCode, message, body ){
 	if (!(this instanceof HttpError))
-		return new HttpError(statusCode, message);
+		return new HttpError(statusCode, message, body);
 
 	if (typeof statusCode !== 'number') {
 		this.message = statusCode;
