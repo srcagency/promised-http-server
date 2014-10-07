@@ -59,7 +59,8 @@ function handleRequest(){
 }
 
 function handleResult( result ){
-	return send(this.request, this.response, result);
+	if (result !== undefined)
+		return send(this.request, this.response, result);
 }
 
 function handleHttpError( e ){
