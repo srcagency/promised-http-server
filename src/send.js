@@ -14,10 +14,12 @@ function send( request, response, data, code, reason ){
 	code = code || response.statusCode;
 	reason = reason || http.STATUS_CODES[code];
 
-	if (data !== undefined && accept && accept.indexOf('json'))
-		headers = json;
-	else
-		headers = plain;
+	if (data !== undefined) {
+		if (accept !== undefined && accept.indexOf('json'))
+			headers = json;
+		else
+			headers = plain;
+	}
 
 	response.writeHead(code, reason, headers);
 	response.end(JSON.stringify(data, null, '\t'));
