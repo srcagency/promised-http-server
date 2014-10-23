@@ -5,7 +5,7 @@ var http = require('http');
 module.exports = send;
 
 var json = { 'Content-Type': 'application/json; charset=utf-8' };
-var plain = { 'Content-Type': 'text/plan; charset=utf-8' };
+var plain = { 'Content-Type': 'text/plain; charset=utf-8' };
 
 function send( request, response, data, code, reason ){
 	var headers;
