@@ -124,13 +124,10 @@ function onRequest( request, response ){
 }
 
 function onError( e ){
-	debug('Failed to start http server', e);
+	if (e.code === 'EADDRINUSE')
+		throw new Error((isSocket(this.endpoint) ? 'Socket' : 'Port') + ' in use');
 
-	if (e.code === 'EADDRINUSE' && isSocket(this.endpoint)) {
-		debug('Socket path existed');
-		fs.unlinkSync(this.endpoint);
-		this.listen(this.endpoint);
-	}
+	throw e;
 }
 
 function endRequest(){
