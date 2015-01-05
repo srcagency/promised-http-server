@@ -14,6 +14,7 @@ module.exports = extend(Server, {
 });
 
 Server.prototype = extend(Object.create(http.Server.prototype), {
+	listen: listen,
 	listening: listening,
 	handleRequest: handleRequest,
 	handleResult: handleResult,
@@ -21,7 +22,7 @@ Server.prototype = extend(Object.create(http.Server.prototype), {
 	handleFatalError: handleFatalError,
 });
 
-function Server( handler, listen ){
+function Server( handler, endpoint ){
 	if (!(this instanceof Server))
 		return new Server();
 
@@ -37,8 +38,16 @@ function Server( handler, listen ){
 	if (handler)
 		this.handleRequest = handler;
 
-	if (listen)
-		this.listen(listen);
+	if (endpoint)
+		this.listen(endpoint);
+}
+
+function listen( endpoint ){
+	this.endpoint = endpoint;
+
+	http.Server.prototype.listen.call(this, endpoint);
+
+	return this.listening();
 }
 
 function listening(){
@@ -82,8 +91,8 @@ function handleFatalError( e ){
 function onListening(){
 	debug('Started http server (listening on: %s)', getAddress.call(this));
 
-	if (isSocket(this.address()))
-		fs.chmodSync(this.address(), '0777');
+	if (isSocket(this.endpoint))
+		fs.chmodSync(this.endpoint, '0777');
 
 	this.open = true;
 }
@@ -117,10 +126,10 @@ function onRequest( request, response ){
 function onError( e ){
 	debug('Failed to start http server', e);
 
-	if (e.code === 'EADDRINUSE' && isSocket(this.address())) {
+	if (e.code === 'EADDRINUSE' && isSocket(this.endpoint)) {
 		debug('Socket path existed');
-		fs.unlinkSync(this.address());
-		this.listen(this.address());
+		fs.unlinkSync(this.endpoint);
+		this.listen(this.endpoint);
 	}
 }
 
