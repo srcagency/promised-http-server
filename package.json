@@ -23,6 +23,7 @@
 	"dependencies": {
 		"extend": "^2.0.0",
 		"bluebird": "^2.5.3",
-		"debug": "^2.1.1"
+		"debug": "^2.1.1",
+		"is-integer": "^1.0.4"
 	}
 }

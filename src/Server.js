@@ -5,6 +5,7 @@ var fs = require('fs');
 var extend = require('extend');
 var Promise = require('bluebird');
 var debug = require('debug')('promised-http-server');
+var isInteger = require('is-integer');
 var HttpError = require('./Error');
 var send = require('./send');
 
@@ -149,8 +150,8 @@ function getAddress(){
 }
 
 function isPort( port ){
-	var portn = parseInt(port, 10);
-	return portn === port && portn >= 0 && portn <= 65535;
+	port = parseInt(port, 10);
+	return isInteger(port) && port >= 0 && port <= 65535;
 }
 
 function isSocket( socket ){
