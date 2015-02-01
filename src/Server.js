@@ -24,7 +24,7 @@ Server.prototype = extend(Object.create(http.Server.prototype), {
 
 function Server( handler, endpoint ){
 	if (!(this instanceof Server))
-		return new Server();
+		return new Server(handler, endpoint);
 
 	http.Server.call(this);
 
