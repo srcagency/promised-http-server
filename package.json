@@ -21,7 +21,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"extend": "^2.0.0",
+		"object-assign": "^2.0.0",
 		"bluebird": "^2.9.14",
 		"debug": "^2.1.2",
 		"is-integer": "^1.0.4"

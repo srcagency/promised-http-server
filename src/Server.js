@@ -2,19 +2,19 @@
 
 var http = require('http');
 var fs = require('fs');
-var extend = require('extend');
+var assign = require('object-assign');
 var Promise = require('bluebird');
 var debug = require('debug')('promised-http-server');
 var isInteger = require('is-integer');
 var HttpError = require('./Error');
 var send = require('./send');
 
-module.exports = extend(Server, {
+module.exports = assign(Server, {
 	send: send,
 	Error: HttpError,
 });
 
-Server.prototype = extend(Object.create(http.Server.prototype), {
+Server.prototype = assign(Object.create(http.Server.prototype), {
 	listen: listen,
 	listening: listening,
 	handleRequest: handleRequest,
