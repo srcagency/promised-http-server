@@ -146,7 +146,12 @@ function getAddress(){
 	if (isSocket(address))
 		return address;
 	else
-		return 'http://' + [ address.address, address.port ].join(':');
+		return 'http://' + [
+			address.address === '::'
+				? 'localhost'
+				: address.address,
+			address.port
+		].join(':');
 }
 
 function isPort( port ){
