@@ -87,6 +87,9 @@ function handleResult( result ){
 		if (result instanceof HttpResponse)
 			return result.send(this.request, this.response);
 
+		if (result instanceof HttpError)
+			return handleHttpError.call(this, result);
+
 		return send(this.request, this.response, result);
 	}
 }
