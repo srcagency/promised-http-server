@@ -7,11 +7,13 @@ var Promise = require('bluebird');
 var debug = require('debug')('promised-http-server');
 var isInteger = require('is-integer');
 var HttpError = require('./Error');
+var HttpResponse = require('./Response');
 var send = require('./send');
 
 module.exports = assign(Server, {
 	send: send,
 	Error: HttpError,
+	Response: HttpResponse,
 });
 
 Server.prototype = assign(Object.create(http.Server.prototype), {
@@ -81,8 +83,12 @@ function handleRequest(){
 }
 
 function handleResult( result ){
-	if (result !== undefined)
+	if (result !== undefined) {
+		if (result instanceof HttpResponse)
+			return result.send(this.request, this.response);
+
 		return send(this.request, this.response, result);
+	}
 }
 
 function handleHttpError( e ){
