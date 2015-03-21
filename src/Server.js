@@ -19,7 +19,6 @@ module.exports = assign(Server, {
 Server.prototype = assign(Object.create(http.Server.prototype), {
 	count: 0,
 	listen: listen,
-	listening: listening,
 	handleRequest: handleRequest,
 	handleResult: handleResult,
 	handleHttpError: handleHttpError,
@@ -62,14 +61,12 @@ function listen( endpoint ){
 
 	http.Server.prototype.listen.call(this, endpoint);
 
-	return this.listening();
+	return listening(this);
 }
 
-function listening(){
-	if (this.open)
-		return Promise.resolve(getAddress(this));
-
-	var server = this;
+function listening( server ){
+	if (server.open)
+		return Promise.resolve(getAddress(server));
 
 	return new Promise(function( resolve ){
 		server.once('listening', function(){
