@@ -125,17 +125,21 @@ function onClose( server ){
 function onRequest( server, request, response ){
 	var id = server.count++;
 
-	debug('Request #%s serving %s: %s', id, request.method, request.url);
+	if (debug.enabled) {
+		debug('Request #%s serving %s: %s', id, request.method, request.url);
+
+		var hrtime = process.hrtime();
+	}
 
 	Promise
+		.resolve([ request, response, id ])
+		.spread(server.handleRequest)
 		.bind({
 			id: id,
 			request: request,
 			response: response,
-			server: server,
-			hrtime: debug.enabled && process.hrtime(),
+			hrtime: hrtime,
 		})
-		.then(server.handleRequest)
 		.then(server.handleResult)
 		.catch(HttpError, server.handleHttpError)
 		.catch(server.handleFatalError)
