@@ -15,6 +15,7 @@ module.exports = assign(Server, {
 });
 
 Server.prototype = assign(Object.create(http.Server.prototype), {
+	count: 0,
 	listen: listen,
 	listening: listening,
 	handleRequest: handleRequest,
@@ -28,8 +29,6 @@ function Server( handler, endpoint ){
 		return new Server(handler, endpoint);
 
 	http.Server.call(this);
-
-	this.requestCount = 0;
 
 	var server = this;
 
@@ -118,7 +117,7 @@ function onClose( server ){
 }
 
 function onRequest( server, request, response ){
-	var id = server.requestCount++;
+	var id = server.count++;
 
 	debug('Request #%s serving %s: %s', id, request.method, request.url);
 
