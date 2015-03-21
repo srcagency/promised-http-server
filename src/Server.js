@@ -31,10 +31,23 @@ function Server( handler, endpoint ){
 
 	this.requestCount = 0;
 
-	this.on('listening', onListening.bind(this));
-	this.on('request', onRequest.bind(this));
-	this.on('error', onError.bind(this));
-	this.on('close', onClose.bind(this));
+	var server = this;
+
+	this.on('listening', function(){
+		onListening(server);
+	});
+
+	this.on('request', function( request, response ){
+		onRequest(server, request, response);
+	});
+
+	this.on('error', function( e ){
+		onError(server, e);
+	});
+
+	this.on('close', function(){
+		onClose(server);
+	});
 
 	if (handler)
 		this.handleRequest = handler;
@@ -53,13 +66,13 @@ function listen( endpoint ){
 
 function listening(){
 	if (this.open)
-		return Promise.resolve(getAddress.call(this));
+		return Promise.resolve(getAddress(this));
 
 	var server = this;
 
 	return new Promise(function( resolve ){
 		server.once('listening', function(){
-			resolve(getAddress.call(server));
+			resolve(getAddress(server));
 		});
 	});
 }
@@ -89,23 +102,23 @@ function handleFatalError( e ){
 	throw e;
 }
 
-function onListening(){
-	debug('Started http server (listening on: %s)', getAddress.call(this));
+function onListening( server ){
+	debug('Started http server (listening on: %s)', getAddress(server));
 
-	if (isSocket(this.endpoint))
-		fs.chmodSync(this.endpoint, '0777');
+	if (isSocket(server.endpoint))
+		fs.chmodSync(server.endpoint, '0777');
 
-	this.open = true;
+	server.open = true;
 }
 
-function onClose(){
+function onClose( server ){
 	debug('Stopped http server');
 
-	this.open = false;
+	server.open = false;
 }
 
-function onRequest( request, response ){
-	var id = this.requestCount++;
+function onRequest( server, request, response ){
+	var id = server.requestCount++;
 
 	debug('Request #%s serving %s: %s', id, request.method, request.url);
 
@@ -114,19 +127,19 @@ function onRequest( request, response ){
 			id: id,
 			request: request,
 			response: response,
-			server: this,
+			server: server,
 			hrtime: debug.enabled && process.hrtime(),
 		})
-		.then(this.handleRequest)
-		.then(this.handleResult)
-		.catch(HttpError, this.handleHttpError)
-		.catch(this.handleFatalError)
+		.then(server.handleRequest)
+		.then(server.handleResult)
+		.catch(HttpError, server.handleHttpError)
+		.catch(server.handleFatalError)
 		.finally(endRequest);
 }
 
-function onError( e ){
+function onError( server, e ){
 	if (e.code === 'EADDRINUSE')
-		throw new Error((isSocket(this.endpoint) ? 'Socket' : 'Port') + ' in use');
+		throw new Error((isSocket(server.endpoint) ? 'Socket' : 'Port') + ' in use');
 
 	throw e;
 }
@@ -140,8 +153,8 @@ function endRequest(){
 	}
 }
 
-function getAddress(){
-	var address = this.address();
+function getAddress( server ){
+	var address = server.address();
 
 	if (isSocket(address))
 		return address;
