@@ -8,7 +8,7 @@ npm install
 
 ## Use
 
-```shell
+```js
 var server = new HttpServer([ handler[, listen ]]);
 ```
 
@@ -47,17 +47,24 @@ the same order as they are called during a request
 A handler can return a promise which will then be resolved before
 passed to the next handler
 
-All handlers will be called with a context of the format:
+`handleRequest` will be called with arguments `request, response, id`
+
+All other handlers will be called with a context of the format:
 
 ```js
 {
 	id: Integer,					// unique request id
 	request: http.ClientRequest,	// request object
 	response: http.ServerResponse,	// response object
-	server: this,					// server object
-	hrtime: process.hrtime(),		// time of request
 }
 ```
+
+`handleResult` will be called with whatever `handleRequest` returned. The
+default implementation handles HttpResponse and HttpError correctly and casts
+everything else to a string before sending it to the client.
+
+`handleHttpError` receives any thrown `HttpError` while `handleFatalError` receives
+any other error.
 
 ### Example
 
@@ -69,7 +76,8 @@ new HttpServer(function(){
 	if (this.request.url === '/things') {
 		switch (this.request.method) {
 			case 'POST':
-				return saveThingFromRequest(this.request);
+				return saveThingFromRequest(this.request)
+					.return(HttpResponse(204));
 			case 'PUT':
 				return Promise
 					.resolve(someAsyncStuff)
