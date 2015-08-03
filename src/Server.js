@@ -5,6 +5,7 @@ var fs = require('fs');
 var assign = require('object-assign');
 var Promise = require('bluebird');
 var debug = require('debug')('promised-http-server');
+var debugRequest = require('debug')('promised-http-server:request');
 var isInteger = require('is-integer');
 var HttpError = require('./Error');
 var HttpResponse = require('./Response');
@@ -92,13 +93,13 @@ function handleResult( result ){
 }
 
 function handleHttpError( e ){
-	debug('Request #%s raised HttpError (%d): %s', this.id, e.code, e);
+	debugRequest('#%s raised HttpError (%d): %s', this.id, e.code, e);
 
 	e.send(this.request, this.response);
 }
 
 function handleFatalError( e ){
-	debug('Request #%s raised fatal error: %s', this.id, e.message);
+	debugRequest('#%s raised fatal error: %s', this.id, e.message);
 
 	if (!this.response.headersSent)
 		HttpError(500, 'Internal server error. Appropriate staff has been notified.')
@@ -125,8 +126,8 @@ function onClose( server ){
 function onRequest( server, request, response ){
 	var id = server.count++;
 
-	if (debug.enabled) {
-		debug('Request #%s serving %s: %s', id, request.method, request.url);
+	if (debugRequest.enabled) {
+		debugRequest('#%s serving %s: %s', id, request.method, request.url);
 
 		var hrtime = process.hrtime();
 	}
@@ -156,9 +157,9 @@ function onError( server, e ){
 function endRequest(){
 	this.response.end();
 
-	if (debug.enabled) {
+	if (debugRequest.enabled) {
 		var diff = process.hrtime(this.hrtime);
-		debug('Request #%s took %dms', this.id, (diff[0] * 1e9 + diff[1]) / 1e6);
+		debugRequest('#%s took %dms', this.id, (diff[0] * 1e9 + diff[1]) / 1e6);
 	}
 }
 
