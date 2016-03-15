@@ -26,11 +26,7 @@ server.listen(listen);
 
 See [http.Server.listen](http://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback)
 
-```js
-server.listening();
-```
-
-Returns a promise which is resolved with the address listened on
+Returns a promise which is resolved with the address listened on.
 
 ```js
 server.handleRequest = fn;
