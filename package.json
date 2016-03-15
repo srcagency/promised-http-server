@@ -1,6 +1,6 @@
 {
 	"name": "promised-http-server",
-	"version": "4.0.0",
+	"version": "4.0.1",
 	"description": "A simple http server with an interface based on promises",
 	"main": "src/Server.js",
 	"keywords": [
