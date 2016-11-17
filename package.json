@@ -1,6 +1,6 @@
 {
 	"name": "promised-http-server",
-	"version": "4.0.1",
+	"version": "5.0.0",
 	"description": "A simple http server with an interface based on promises",
 	"main": "src/Server.js",
 	"keywords": [
@@ -10,10 +10,7 @@
 		"futures",
 		"bluebird"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/srcagency/promised-http-server.git"
-	},
+	"repository": "srcagency/promised-http-server",
 	"author": {
 		"name": "Thomas Jensen",
 		"email": "thomas@src.agency",
@@ -21,11 +18,11 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"object-assign": "^4.0.1",
 		"bluebird": "^3.3.4",
 		"debug": "^2.2.0",
 		"is-integer": "^1.0.6",
 		"JSONStream": "^1.2.1",
+		"object-assign": "^4.0.1",
 		"promise-streams": "^1.0.1"
 	}
 }
