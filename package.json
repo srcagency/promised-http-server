@@ -24,6 +24,8 @@
 		"object-assign": "^4.0.1",
 		"bluebird": "^3.3.4",
 		"debug": "^2.2.0",
-		"is-integer": "^1.0.6"
+		"is-integer": "^1.0.6",
+		"JSONStream": "^1.2.1",
+		"promise-streams": "^1.0.1"
 	}
 }
