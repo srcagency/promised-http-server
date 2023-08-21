@@ -48,6 +48,6 @@ function send( request, response, data, code, reason ){
 			? JSONStream.stringify(false)
 			: headers === json
 			? JSONStream.stringify('[\n', ',\n', '\n]')
-			: JSONStream.stringify('[\n', ',\n', '\n]', '\t'))
+			: JSONStream.stringify('', '\n', '\n', '\t'))
 		.pipe(response));
 }
