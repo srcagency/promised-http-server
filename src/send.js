@@ -6,8 +6,10 @@ var ps = require('promise-streams');
 
 module.exports = send;
 
-var json = { 'Content-Type': 'application/json; charset=utf-8' };
 var plain = { 'Content-Type': 'text/plain; charset=utf-8' };
+var json = { 'Content-Type': 'application/json; charset=utf-8' };
+var jsonl = { 'Content-Type': 'application/jsonl; charset=utf-8' };
+var ndjson = { 'Content-Type': 'application/x-ndjson; charset=utf-8' };
 
 function send( request, response, data, code, reason ){
 	var headers;
@@ -19,18 +21,32 @@ function send( request, response, data, code, reason ){
 	if (data === undefined)
 		return response.writeHead(code, reason);
 
-	if (accept !== undefined && accept.indexOf('json') !== -1)
-		headers = json;
-	else
+	if (accept !== undefined) {
+		if (accept.indexOf('jsonl') !== -1)
+			headers = jsonl
+		else if (accept.indexOf('ndjson') !== -1)
+			headers = ndjson
+		else if (accept.indexOf('json') !== -1)
+			headers = json;
+		else
+			headers = plain;
+	} else {
 		headers = plain;
+	}
 
 	response.writeHead(code, reason, headers);
 
 	if (data === null || typeof data.pipe !== 'function')
-		return response.end(JSON.stringify(data, null, headers === json ? null : '\t'));
+		return response.end(JSON.stringify(
+			data,
+			null,
+			headers === json || headers === jsonl || headers === ndjson ? null : '\t'
+		));
 
 	return ps.wait(data
-		.pipe(headers === json
+		.pipe(headers === jsonl || headers === ndjson
+			? JSONStream.stringify(false)
+			: headers === json
 			? JSONStream.stringify('[\n', ',\n', '\n]')
 			: JSONStream.stringify('[\n', ',\n', '\n]', '\t'))
 		.pipe(response));
